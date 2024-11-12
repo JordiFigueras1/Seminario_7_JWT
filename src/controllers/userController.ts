@@ -7,18 +7,21 @@ import jwt from 'jsonwebtoken'
 
 
 export async function getUsers(_req: Request, res: Response): Promise<Response> {
-   try {
-    console.log("Get users");
-    const users = await userServices.getEntries.getAll();
-    // Encriptar las contraseñas de los usuarios antes de devolverlos
-    for (let user of users) {
-        user.password = await user.encryptPassword(user.password);
-     }
-    return res.json(users);
-   } catch (error) {
-    return res.status(500).json({ error:'Failes to get users'});
-   }
-}
+    try {
+        console.log("Get users");
+        const users = await userServices.getEntries.getAll();
+        // Encriptar las contraseñas de los usuarios antes de devolverlos
+        for (let user of users) {
+            if (user.password) { // Solo encripta si password no es undefined
+                user.password = await user.encryptPassword(user.password);
+            }
+        }
+        return res.json(users);
+    } catch (error) {
+        console.error('Error in getUsers:', error); // Añadir esta línea para depurar
+        return res.status(500).json({ error: 'Fails to get users' });
+    }
+ }
 
 export async function createUser(req: Request, res: Response): Promise<Response> {
     try {

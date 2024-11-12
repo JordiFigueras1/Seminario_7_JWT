@@ -1,7 +1,7 @@
 import { connect, connection } from 'mongoose';
 
 export async function run() {
-    await connect('mongodb://localhost:27017/Prueba_1')
+    await connect('mongodb://localhost:27017/Prueba_2756457')
     .then(()=>{
         console.log('Database connected!!')
     }) .catch((err)=>{
